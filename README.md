@@ -4,13 +4,21 @@ Understanding `Result` inside closure in Kotlin (Similar to Swift)
 ## Example 
 
 ### Defining the closure with `Result` type
+Kotlin
 ```kotlin
 interface FeedService {
     fun fetchFeeds(id: Int, completion: (Result<MutableList<Feed>>) -> Unit)
 }
 ```
+Swift
+```swift
+protocol FeedService {
+    func fetchFeeds(id: Int, completion: (Result<[Feed], Error>) -> Void)
+}
+```
 
 ### Implementing the closure with `Result` type
+Kotlin
 ```kotlin
 class FeedServiceImpl : FeedService {
 
@@ -35,11 +43,33 @@ sealed class FetchFeedError : Throwable() {
     object InvalidFeedId : FetchFeedError()
     data class Connectivity(override val message: String) : FetchFeedError()
 }
+```
 
+Swift
+```swift
+class FeedServiceImpl : FeedService {
 
+    func fetchFeeds(id: Int, completion: (Result<[Feed], Error>) -> Void) {
+        if (id == -1) {
+            completion(.failure(.invalidFeedId))
+            return
+        }
+        if (id == 0) {
+            completion(.failure(.connectivity("please check connection")))
+            return
+        }
+        completion(.success([]))
+    }
+}
+
+enum FetchFeedError: Error {
+    case invalidFeedId
+    case connectivity(message: String)
+}
 ```
 
 ### Using the closure with `Result` type
+Kotlin
 ```kotlin
     private fun fetchFeed(id: Int) {
         service?.fetchFeeds(id = id, completion = { result ->
@@ -52,4 +82,16 @@ sealed class FetchFeedError : Throwable() {
         })
     }
 ```
-
+Swift
+```swift
+    private func fetchFeed(id: Int) {        
+        service?.fetchFeeds(id: id) { result in 
+            switch result {
+                case .success(let feeds):
+                    print(feeds)
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
+```
