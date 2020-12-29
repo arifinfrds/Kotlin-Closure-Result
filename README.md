@@ -1,24 +1,16 @@
 # Kotlin-Closure-Result
 Understanding `Result` inside closure in Kotlin (Similar to Swift)
 
-## Example 
+## Example in Kotlin
 
 ### Defining the closure with `Result` type
-Kotlin
 ```kotlin
 interface FeedService {
     fun fetchFeeds(id: Int, completion: (Result<MutableList<Feed>>) -> Unit)
 }
 ```
-Swift
-```swift
-protocol FeedService {
-    func fetchFeeds(id: Int, completion: (Result<[Feed], Error>) -> Void)
-}
-```
 
 ### Implementing the closure with `Result` type
-Kotlin
 ```kotlin
 class FeedServiceImpl : FeedService {
 
@@ -45,7 +37,30 @@ sealed class FetchFeedError : Throwable() {
 }
 ```
 
-Swift
+### Using the closure with `Result` type
+```kotlin
+    private fun fetchFeed(id: Int) {
+        service?.fetchFeeds(id = id, completion = { result ->
+            result.onSuccess { feeds ->
+                println(feeds)
+            }
+            result.onFailure { throwable ->
+                println("$throwable : ${throwable.message}")
+            }
+        })
+    }
+```
+
+## Example in Swift
+
+### Defining the closure with `Result` type
+```swift
+protocol FeedService {
+    func fetchFeeds(id: Int, completion: (Result<[Feed], Error>) -> Void)
+}
+```
+
+### Implementing the closure with `Result` type
 ```swift
 class FeedServiceImpl : FeedService {
 
@@ -68,21 +83,7 @@ enum FetchFeedError: Error {
 }
 ```
 
-### Using the closure with `Result` type
-Kotlin
-```kotlin
-    private fun fetchFeed(id: Int) {
-        service?.fetchFeeds(id = id, completion = { result ->
-            result.onSuccess { feeds ->
-                println(feeds)
-            }
-            result.onFailure { throwable ->
-                println("$throwable : ${throwable.message}")
-            }
-        })
-    }
-```
-Swift
+### Using the closure with `Result` typeift
 ```swift
     private func fetchFeed(id: Int) {        
         service?.fetchFeeds(id: id) { result in 
