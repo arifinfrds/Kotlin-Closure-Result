@@ -83,7 +83,7 @@ enum FetchFeedError: Error {
 }
 ```
 
-### Using the closure with `Result` typeift
+### Using the closure with `Result` type
 ```swift
     private func fetchFeed(id: Int) {        
         service?.fetchFeeds(id: id) { result in 
