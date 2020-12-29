@@ -8,8 +8,10 @@ Understanding `Result` inside closure in Kotlin (Similar to Swift)
 interface FeedService {
     fun fetchFeeds(id: Int, completion: (Result<MutableList<Feed>>) -> Unit)
 }
+```
 
-
+### Implementing the closure with `Result` type
+```kotlin
 class FeedServiceImpl : FeedService {
 
     override fun fetchFeeds(id: Int, completion: (Result<MutableList<Feed>>) -> Unit) {
@@ -33,6 +35,7 @@ sealed class FetchFeedError : Throwable() {
     object InvalidFeedId : FetchFeedError()
     data class Connectivity(override val message: String) : FetchFeedError()
 }
+
 
 ```
 
