@@ -34,6 +34,7 @@ sealed class FetchFeedError : Throwable() {
     data class Connectivity(override val message: String) : FetchFeedError()
 }
 
+```
 
 ### Using the closure with `Result` type
 ```kotlin
@@ -47,4 +48,5 @@ sealed class FetchFeedError : Throwable() {
             }
         })
     }
+```
 
